@@ -95,8 +95,7 @@ class SpanRecord extends Equatable {
   final SpanStatus status;
   final Map<String, Object?> attributes;
 
-  int? get durationMs =>
-      end?.difference(start).inMilliseconds;
+  int? get durationMs => end?.difference(start).inMilliseconds;
 
   SpanRecord finish({
     required DateTime endedAt,

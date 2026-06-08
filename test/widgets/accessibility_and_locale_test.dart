@@ -59,7 +59,9 @@ AppDependencies testDependencies() {
 }
 
 void main() {
-  testWidgets('dashboard renders on a small viewport with large text', (tester) async {
+  testWidgets('dashboard renders on a small viewport with large text', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(360, 640);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -77,46 +79,46 @@ void main() {
     expect(find.textContaining('Maya'), findsOneWidget);
   });
 
-testWidgets('custom selection control exposes semantics', (tester) async {
-  final semanticsHandle = tester.ensureSemantics();
+  testWidgets('custom selection control exposes semantics', (tester) async {
+    final semanticsHandle = tester.ensureSemantics();
 
-  try {
-    const semanticsKey = ValueKey('completed_choice_semantics');
+    try {
+      const semanticsKey = ValueKey('completed_choice_semantics');
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: AccessibleChoiceCard<Adherence>(
-            semanticsKey: semanticsKey,
-            value: Adherence.completed,
-            groupValue: Adherence.completed,
-            label: 'Completed as planned',
-            onChanged: (_) {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AccessibleChoiceCard<Adherence>(
+              semanticsKey: semanticsKey,
+              value: Adherence.completed,
+              groupValue: Adherence.completed,
+              label: 'Completed as planned',
+              onChanged: (_) {},
+            ),
           ),
         ),
-      ),
-    );
+      );
 
-    await tester.pump();
+      await tester.pump();
 
-    final node = tester.getSemantics(find.byKey(semanticsKey));
+      final node = tester.getSemantics(find.byKey(semanticsKey));
 
-    expect(
-      node,
-      matchesSemantics(
-        label: 'Completed as planned',
-        hasSelectedState: true,
-        isSelected: true,
-        isButton: true,
-        hasEnabledState: true,
-        isEnabled: true,
-        hasTapAction: true,
-      ),
-    );
-  } finally {
-    semanticsHandle.dispose();
-  }
-});
+      expect(
+        node,
+        matchesSemantics(
+          label: 'Completed as planned',
+          hasSelectedState: true,
+          isSelected: true,
+          isButton: true,
+          hasEnabledState: true,
+          isEnabled: true,
+          hasTapAction: true,
+        ),
+      );
+    } finally {
+      semanticsHandle.dispose();
+    }
+  });
   testWidgets('English and German labels update', (tester) async {
     Locale activeLocale = const Locale('en');
 

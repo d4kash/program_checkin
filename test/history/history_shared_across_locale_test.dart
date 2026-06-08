@@ -28,41 +28,26 @@ void main() {
       wellbeing: Wellbeing.okay,
     );
 
-    await repository.submitCheckIn(
-      first,
-      correlationId: 'corr-en',
-    );
+    await repository.submitCheckIn(first, correlationId: 'corr-en');
 
     // Simulate locale switch. Locale should not recreate repository.
     await dependencies.plainPreferences.setString('locale_code', 'de');
 
-    await repository.submitCheckIn(
-      second,
-      correlationId: 'corr-de',
-    );
+    await repository.submitCheckIn(second, correlationId: 'corr-de');
 
     final historyResult = await repository.loadHistory(
       correlationId: 'corr-history',
     );
 
     final entries = switch (historyResult) {
-  AppSuccess<List<CheckInEntry>>(:final value) => value,
-  _ => fail('History should load successfully'),
-};
+      AppSuccess<List<CheckInEntry>>(:final value) => value,
+      _ => fail('History should load successfully'),
+    };
 
-    expect(
-      entries.where((entry) => entry.id.startsWith('local_')).length,
-      2,
-    );
+    expect(entries.where((entry) => entry.id.startsWith('local_')).length, 2);
 
-    expect(
-      entries.any((entry) => entry.progressValue == 80.4),
-      isTrue,
-    );
+    expect(entries.any((entry) => entry.progressValue == 80.4), isTrue);
 
-    expect(
-      entries.any((entry) => entry.progressValue == 81.2),
-      isTrue,
-    );
+    expect(entries.any((entry) => entry.progressValue == 81.2), isTrue);
   });
 }

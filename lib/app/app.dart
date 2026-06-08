@@ -18,7 +18,6 @@ class ProgramCheckInApp extends StatefulWidget {
 }
 
 class _ProgramCheckInAppState extends State<ProgramCheckInApp> {
-  
   late final AppRouter _appRouter;
 
   @override
@@ -32,8 +31,7 @@ class _ProgramCheckInAppState extends State<ProgramCheckInApp> {
 
   @override
   Widget build(BuildContext context) {
-
-final dependencies = widget.dependencies;
+    final dependencies = widget.dependencies;
 
     return MultiRepositoryProvider(
       providers: [
