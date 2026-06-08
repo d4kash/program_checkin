@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -47,17 +47,28 @@ jobs:
 
       - name: Check for raw print/debug/log usage
         run: |
-          ! rg "print\(|debugPrint\(|log\(" lib test
+          if rg "print\(|debugPrint\(|log\(" lib test; then
+            echo "Raw print/debugPrint/log usage found. Please remove it."
+            exit 1
+          else
+            echo "No raw print/debugPrint/log usage found."
+          fi
 
-      - name: Check sensitive keyword matches
+      - name: Review sensitive keyword matches
         run: |
+          echo "Running sensitive keyword review..."
           rg -i "secret|token|password|email|phone|authorization" lib test || true
 
-      - name: Explain sensitive keyword matches
-        run: |
-          echo "Sensitive keyword matches are expected only in fake fixtures, storage policy, session models, and privacy/redaction tests."
-          echo "Review output above to confirm no real credentials, API keys, DSNs, real domains, authorization headers, request bodies, or response bodies are committed."
-            - name: Build debug APK
+          echo ""
+          echo "Expected intentional matches may include:"
+          echo "- storage policy blocked keywords"
+          echo "- fake session token fields"
+          echo "- fake fixture data"
+          echo "- privacy and redaction tests"
+          echo ""
+          echo "Please confirm there are no real credentials, real API keys, DSNs, real authorization headers, request bodies, or response bodies."
+
+      - name: Build debug APK
         run: flutter build apk --debug
 
       - name: Upload debug APK
