@@ -1,0 +1,67 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  quality-check:
+    name: Analyze, Test, and Privacy Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Show Flutter version
+        run: flutter --version
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze project
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Check for raw print/debug/log usage
+        run: |
+          ! rg "print\(|debugPrint\(|log\(" lib test
+
+      - name: Check sensitive keyword matches
+        run: |
+          rg -i "secret|token|password|email|phone|authorization" lib test || true
+
+      - name: Explain sensitive keyword matches
+        run: |
+          echo "Sensitive keyword matches are expected only in fake fixtures, storage policy, session models, and privacy/redaction tests."
+          echo "Review output above to confirm no real credentials, API keys, DSNs, real domains, authorization headers, request bodies, or response bodies are committed."
+            - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk

@@ -1,3 +1,4 @@
+![Flutter CI](https://github.com/d4kash/program_checkin/actions/workflows/flutter_ci.yml/badge.svg)
 # Program Check-in Mini App
 
 A production-style Flutter mini app for the **Program Check-in Mini App** technical assignment. The code is shaped around the PDF requirements: dashboard, weekly check-in, history, English/German locale switching, fake session storage, reliability failures, local observability, redaction, and tests.
@@ -154,15 +155,3 @@ Every submit attempt receives a correlation ID that links breadcrumb, UI span, r
 - Localization is a small local abstraction instead of ARB/gen_l10n to keep the assignment compact and testable.
 - Fake in-memory stores replace platform plugins so tests stay deterministic.
 - A debug observability viewer is not included to keep scope controlled.
-
-## Time spent
-
-Designed for the requested 4-hour build plus 30-minute README timebox.
-
-## With another day
-
-- Add golden tests.
-- Add a debug-only observability viewer.
-- Add more route recovery tests.
-- Add full ARB/gen_l10n if this grows into a larger app.
-- Add CI workflow for format/analyze/test.
