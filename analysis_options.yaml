@@ -1,0 +1,10 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    avoid_print: true
+    public_member_api_docs: false
+    always_declare_return_types: true
+    sort_constructors_first: false
+    lines_longer_than_80_chars: false
