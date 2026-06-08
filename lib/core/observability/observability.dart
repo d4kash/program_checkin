@@ -272,7 +272,7 @@ class InMemoryObservability {
     );
   }
 
-  void log(
+  void recordEvent(
     String eventName, {
     LogLevel level = LogLevel.info,
     Map<String, Object?> attributes = const {},

@@ -198,7 +198,7 @@ class CheckInCubit extends Cubit<CheckInState> {
       1,
       attributes: {'correlation_id': correlationId},
     );
-    observability.log(
+    observability.recordEvent(
       'checkin_submit_attempted',
       attributes: {'correlation_id': correlationId, 'route_name': 'check-in'},
     );
@@ -220,7 +220,7 @@ class CheckInCubit extends Cubit<CheckInState> {
         1,
         attributes: {'correlation_id': correlationId},
       );
-      observability.log(
+      observability.recordEvent(
         'checkin_validated',
         level: LogLevel.warning,
         attributes: {
@@ -275,7 +275,7 @@ class CheckInCubit extends Cubit<CheckInState> {
 
       if (result is AppSuccess<CheckInEntry>) {
         draftStore.clear();
-        observability.log(
+        observability.recordEvent(
           'checkin_submitted',
           attributes: {
             'correlation_id': correlationId,
@@ -316,7 +316,7 @@ class CheckInCubit extends Cubit<CheckInState> {
             'status_class': failure.statusClass,
           },
         );
-        observability.log(
+        observability.recordEvent(
           'checkin_failed',
           level: LogLevel.warning,
           attributes: {

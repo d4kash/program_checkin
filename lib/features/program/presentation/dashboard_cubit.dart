@@ -81,7 +81,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         );
         emit(const DashboardState(status: DashboardStatus.empty));
       } else {
-        observability.log(
+        observability.recordEvent(
           'dashboard_loaded',
           attributes: {
             'route_name': 'dashboard',

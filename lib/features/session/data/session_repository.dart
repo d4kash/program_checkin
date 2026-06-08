@@ -60,7 +60,7 @@ class LocalSessionRepository implements SessionRepository {
       if (result.failure.isUnauthorized) {
         await clear();
       }
-      observability.log(
+      observability.recordEvent(
         'session_refresh_failed',
         level: LogLevel.warning,
         attributes: {
